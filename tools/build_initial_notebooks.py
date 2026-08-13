@@ -32,9 +32,10 @@ def readable_table(headers: list[str], rows: list[list[str]]) -> str:
 
 
 def lines(text: str) -> list[str]:
-    """Return notebook source lines with their newline characters retained."""
+    """Return source lines without a trailing blank line in the code cell."""
     cleaned = dedent(text).strip("\n")
-    return [line + "\n" for line in cleaned.split("\n")]
+    source = cleaned.split("\n")
+    return [line + "\n" for line in source[:-1]] + source[-1:]
 
 
 def markdown(text: str) -> dict:
@@ -46,13 +47,14 @@ def markdown(text: str) -> dict:
     source = dedent(text).strip("\n").split("\n")
     source = [line[8:] if line.startswith("        ") else line for line in source]
     cleaned = "\n".join(source)
-    # Displayed equations are central teaching objects and should be slightly
-    # larger than inline notation. Apply this consistently at generation time.
+    # Displayed equations are central teaching objects and should be modestly
+    # larger than inline notation. ``1.1em`` sits between GitHub's normal
+    # display size and the previously used ``\large`` setting.
     def enlarge_display_equation(match: re.Match[str]) -> str:
         equation = match.group(1).strip()
-        if equation.startswith(r"\large"):
+        if equation.startswith(r"\style{font-size:1.1em}"):
             return f"$$\n{equation}\n$$"
-        return "$$\n\\large\n" + equation + "\n$$"
+        return "$$\n\\style{font-size:1.1em}{\n" + equation + "\n}\n$$"
 
     cleaned = re.sub(r"(?s)\$\$(.*?)\$\$", enlarge_display_equation, cleaned)
     return {
@@ -393,7 +395,16 @@ $$
 
         fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
         ax.plot(theta_grid, objective_grid, color=BLUE, linewidth=2.0, label=r"$J(\\theta)=(\\theta-3)^2$")
-        ax.scatter([3.0], [0.0], color=GREEN, s=75, zorder=3, label="Minimum at θ = 3")
+        ax.scatter(
+            [3.0],
+            [0.0],
+            s=150,
+            facecolor=RED,
+            edgecolor="black",
+            linewidth=1.5,
+            zorder=3,
+            label="Minimum at θ = 3",
+        )
         ax.set(title="A one-parameter objective", xlabel="Parameter θ", ylabel="Loss J(θ)")
         ax.grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
         ax.legend()
@@ -669,7 +680,7 @@ The next function records a complete path so that we can inspect these behaviour
         fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
         for rate in example_rates:
             _, losses = trace_quadratic_descent(0.0, rate, n_steps=20)
-            ax.semilogy(losses, linewidth=2, marker="o", markersize=3, label=f"α = {rate}")
+            ax.semilogy(losses, linewidth=2, marker="o", markersize=4.5, label=f"α = {rate}")
 
         ax.set(title="Learning rate changes convergence", xlabel="Gradient update", ylabel="Loss J(θ), logarithmic scale")
         ax.grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)

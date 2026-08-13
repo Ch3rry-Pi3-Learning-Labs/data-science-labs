@@ -105,6 +105,10 @@ def validate(path: Path, execute: bool) -> list[str]:
                 )
                 break
 
+    for cell_index, cell in enumerate(notebook.cells):
+        if cell.cell_type == "code" and cell.source.endswith("\n"):
+            failures.append(f"trailing blank line in code cell {cell_index}")
+
     if execute:
         try:
             client = NotebookClient(

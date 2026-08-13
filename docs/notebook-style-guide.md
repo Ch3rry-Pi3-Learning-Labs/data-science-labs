@@ -118,7 +118,7 @@ Use a readable table text size, but let the renderer determine the table's natur
 ## Displayed mathematics
 
 - Keep inline mathematics at the surrounding body-text size.
-- Render standalone display equations slightly larger so that symbols, superscripts and subscripts remain legible in GitHub's notebook view.
+- Render standalone display equations at approximately `1.1em` so that symbols, superscripts and subscripts remain legible without becoming visually dominant in GitHub's notebook view.
 - Introduce a generic rule before substituting a lesson-specific expression when that rule is important to the reader's intuition.
 - Define every symbol in the generic form, then explicitly map the concrete terms onto it before simplifying.
 
