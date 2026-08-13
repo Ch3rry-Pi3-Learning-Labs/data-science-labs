@@ -2,15 +2,47 @@
 
 from __future__ import annotations
 
+import base64
+import io
 import re
 import sys
 from pathlib import Path
 
 import nbformat
 from nbclient import NotebookClient
+from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PLOT_LEFT_OFFSET_PX = 10
+
+
+def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
+    """Align the visible figure canvas with the notebook content column.
+
+    GitHub positions rich output slightly to the left of Markdown and code.
+    A small transparent left offset leaves the plot itself unchanged while
+    moving its visible white canvas onto the same left boundary. No matching
+    right padding is added because the right edge is already satisfactory.
+    """
+    for cell in notebook.cells:
+        if cell.cell_type != "code":
+            continue
+        for output in cell.get("outputs", []):
+            encoded = output.get("data", {}).get("image/png")
+            if not encoded:
+                continue
+            raw = base64.b64decode(encoded)
+            with Image.open(io.BytesIO(raw)).convert("RGBA") as image:
+                canvas = Image.new(
+                    "RGBA",
+                    (image.width + PLOT_LEFT_OFFSET_PX, image.height),
+                    (0, 0, 0, 0),
+                )
+                canvas.paste(image, (PLOT_LEFT_OFFSET_PX, 0))
+                buffer = io.BytesIO()
+                canvas.save(buffer, format="PNG")
+            output.data["image/png"] = base64.b64encode(buffer.getvalue()).decode("ascii")
 
 
 def notebook_links(notebook: nbformat.NotebookNode) -> tuple[set[str], set[str]]:
@@ -69,6 +101,7 @@ def validate(path: Path, execute: bool) -> list[str]:
                 resources={"metadata": {"path": str(path.parent)}},
             )
             client.execute()
+            align_png_outputs(notebook)
             # Preserve only outputs produced by a successful clean-kernel run.
             # GitHub readers can therefore inspect the complete verified lab.
             nbformat.write(notebook, path)

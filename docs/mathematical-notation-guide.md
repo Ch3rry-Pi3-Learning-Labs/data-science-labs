@@ -46,6 +46,16 @@ For every new vector or matrix, show:
 3. a small concrete example; and
 4. its code representation and shape.
 
+For a long generic column vector, prefer compact transpose notation:
+
+$$
+\boldsymbol{\theta}
+=\left(\theta_1,\theta_2,\ldots,\theta_d\right)^{\mathsf T}
+\in\mathbb{R}^{d}.
+$$
+
+Explain that $\mathsf T$ denotes the transpose and therefore makes the written sequence a $d\times 1$ column vector. This avoids very tall, segmented brackets that may render unevenly in browser-based notebook viewers. Retain vertical `bmatrix` notation for short concrete vectors where it improves rather than harms legibility.
+
 For example:
 
 $$

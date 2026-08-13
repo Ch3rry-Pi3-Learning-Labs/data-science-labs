@@ -174,7 +174,7 @@ def build_template() -> None:
         SEED = 5901
         rng = np.random.default_rng(SEED)
 
-        FULL_WIDTH_FIGSIZE = (14, 6)
+        SINGLE_PLOT_FIGSIZE = (12, 5.5)
         TWO_PANEL_FIGSIZE = (12, 4.5)
         """),
         markdown(heading("problem", 2, "2. Problem and intuition") + "\n\nBegin with a section preview: why this section is needed, what it will establish and how that output will support the next stage. Then introduce the practical question, what is known, what must be learned and why the proposed method helps."),
@@ -321,8 +321,9 @@ NumPy supplies vector operations and a reproducible random-number generator. Mat
         RED = "#E53935"
         GREEN = "#18A957"
 
-        # Full-width figures align with the notebook text column on GitHub.
-        FULL_WIDTH_FIGSIZE = (14, 6)
+        # Consistent native sizes keep plots legible without forcing them to
+        # the maximum notebook width. Published outputs are centred separately.
+        SINGLE_PLOT_FIGSIZE = (12, 5.5)
         TWO_PANEL_FIGSIZE = (12, 4.5)
         """),
         markdown(heading("optimisation-problem", 2, "2. The optimisation problem") + r"""
@@ -335,13 +336,10 @@ NumPy supplies vector operations and a reproducible random-number generator. Mat
 
         $$
         \boldsymbol{\theta}
-        =\begin{bmatrix}
-        \theta_1\\
-        \theta_2\\
-        \vdots\\
-        \theta_d
-        \end{bmatrix}.
+        =\left(\theta_1,\theta_2,\ldots,\theta_d\right)^{\mathsf T}.
         $$
+
+        The superscript $\mathsf T$ means **transpose**. It turns the horizontally written sequence into a $d\times 1$ column vector. This compact notation avoids an unnecessarily tall bracket while preserving the vector's orientation.
 
         For a concrete two-parameter model, an initial vector might be
 
@@ -393,7 +391,7 @@ $$
         theta_grid = np.linspace(-1.0, 6.5, 300)
         objective_grid = (theta_grid - 3.0) ** 2
 
-        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
+        fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
         ax.plot(theta_grid, objective_grid, color=BLUE, linewidth=2.5, label=r"$J(\\theta)=(\\theta-3)^2$")
         ax.scatter([3.0], [0.0], color=GREEN, s=75, zorder=3, label="Minimum at θ = 3")
         ax.set(title="A one-parameter objective", xlabel="Parameter θ", ylabel="Loss J(θ)")
@@ -667,7 +665,7 @@ The next function records a complete path so that we can inspect these behaviour
         code("""
         example_rates = [0.02, 0.10, 0.95, 1.05]
 
-        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
+        fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
         for rate in example_rates:
             _, losses = trace_quadratic_descent(0.0, rate, n_steps=20)
             ax.semilogy(losses, linewidth=2, marker="o", markersize=3, label=f"α = {rate}")
@@ -683,17 +681,19 @@ The learning rate of 0.02 reduces the loss steadily but slowly. Rates 0.10 and 0
 
         The scalar example established the complete optimisation cycle with a known minimum. This section transfers that same cycle to a recognisable data-science task: estimating the slope and intercept of a line from noisy observations. We will first define the data and model, then derive the two gradients that the complete runner will use.
 
-        Let $x_i\in\mathbb{R}$ be the feature and $y_i\in\mathbb{R}$ the observed target for observation $i$, where $i\in\{1,\ldots,N\}$. Collect the values into the vectors
+        Let $x_i\in\mathbb{R}$ be the feature and $y_i\in\mathbb{R}$ the observed target for observation $i$, where $i\in\{1,\ldots,N\}$. Collect the values into the column vectors
 
         $$
         \mathbf{x}
-        =\begin{bmatrix}x_1\\x_2\\\vdots\\x_N\end{bmatrix}
+        =\left(x_1,x_2,\ldots,x_N\right)^{\mathsf T}
         \in\mathbb{R}^{N},
         \qquad
         \mathbf{y}
-        =\begin{bmatrix}y_1\\y_2\\\vdots\\y_N\end{bmatrix}
+        =\left(y_1,y_2,\ldots,y_N\right)^{\mathsf T}
         \in\mathbb{R}^{N}.
         $$
+
+        As above, $\mathsf T$ denotes the transpose and makes each horizontally written sequence an $N\times 1$ column vector. We reserve vertical matrix notation for the short concrete example below, where every element can be shown without an unusually tall delimiter.
 
         For a three-observation example, these could be
 
@@ -1045,7 +1045,7 @@ The left panel shows that the fitted line follows the centre of the noisy observ
         code("""
         regression_rates = [0.005, 0.05, 0.20]
 
-        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
+        fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
         for rate in regression_rates:
             result = fit_linear_gradient_descent(x, y, learning_rate=rate, n_steps=120)
             ax.semilogy(result.losses, linewidth=2, label=f"α = {rate}")
