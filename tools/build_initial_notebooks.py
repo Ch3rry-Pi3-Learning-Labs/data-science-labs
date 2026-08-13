@@ -18,7 +18,18 @@ def lines(text: str) -> list[str]:
 
 
 def markdown(text: str) -> dict:
-    return {"cell_type": "markdown", "metadata": {}, "source": lines(text)}
+    # A heading is sometimes constructed at column zero and concatenated with
+    # an indented triple-quoted body. ``dedent`` then sees the heading as the
+    # minimum indentation and leaves the body indented, which Markdown renders
+    # as a literal code block. Remove that known source indentation while
+    # preserving deliberate three-space nesting in the table of contents.
+    source = dedent(text).strip("\n").split("\n")
+    source = [line[8:] if line.startswith("        ") else line for line in source]
+    return {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [line + "\n" for line in source],
+    }
 
 
 def code(text: str) -> dict:

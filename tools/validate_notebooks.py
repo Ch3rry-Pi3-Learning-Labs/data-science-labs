@@ -36,6 +36,20 @@ def validate(path: Path, execute: bool) -> list[str]:
     if not any("Contents" in cell.source for cell in notebook.cells if cell.cell_type == "markdown"):
         failures.append("missing table of contents")
 
+    # Eight leading spaces turn ordinary Markdown into a literal code block.
+    # The public notebooks use fenced blocks if code is ever needed in prose,
+    # so this reliably catches accidental generator indentation.
+    for cell_index, cell in enumerate(notebook.cells):
+        if cell.cell_type != "markdown":
+            continue
+        for line_number, line in enumerate(cell.source.splitlines(), start=1):
+            if line.startswith("        "):
+                failures.append(
+                    "unintended Markdown code-block indentation in "
+                    f"cell {cell_index}, line {line_number}"
+                )
+                break
+
     if execute:
         try:
             client = NotebookClient(
