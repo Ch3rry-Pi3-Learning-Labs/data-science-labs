@@ -32,6 +32,16 @@ Include a linked, nested table of contents; numbered sections; CH3RRY PI3 blue h
 
 Write every acronym in full at first use. Define every mathematical symbol before relying on it. Never describe a concept as obvious, trivial or easy. Do not use colour as the only means of conveying information. Separate reusable definitions from demonstration calls, use a fixed random seed where randomness is involved and ensure the notebook runs from a clean kernel from beginning to end.
 
+Apply the series-wide presentation standard: a visual learning journey,
+restrained cherry branding, naturally sized readable tables, displayed
+mathematics at approximately `1.1em`, a generic rule before its concrete use
+when helpful, compact symbolic vectors with concrete column-vector examples,
+consistent native plot sizes, light horizontal grids, accessible focal
+markers, no trailing blank lines in code cells and the standard approximately
+17-pixel left alignment for every visible code-cell output. Do not reproduce
+these offsets manually inside individual teaching cells; use the repository's
+clean-kernel publication tooling.
+
 Do not introduce complexity merely to appear sophisticated. Preserve the formal method while making each reasoning step visible.
 
 Before approval, check the notebook against the repository's style, writing, mathematical-notation, code-documentation and review guides.

@@ -141,6 +141,13 @@ Keep ordinary technical headings and body text free of emojis. Brand accents sho
 - State explicitly when Python uses zero-based indexing but the mathematics uses one-based indexing.
 - Keep reusable functions independent of demonstration constants wherever practical.
 - The complete runner should call the same focused functions developed earlier.
+- Remove trailing blank lines from code cells before publication.
+- Apply the standard output alignment during clean-kernel publication: PNG
+  figures receive a 17-pixel transparent left inset, while each visible line
+  of native text output receives two leading monospace spaces (approximately
+  17 pixels in GitHub's current renderer).
+- Apply this alignment to every published code-cell output rather than
+  correcting individual cells manually.
 
 When code uses vectors or matrices, show both representations before relying on
 them:
@@ -175,6 +182,40 @@ Every plot should have a purpose stated before it and an interpretation afterwar
 - a short explanation of the pattern the reader should inspect.
 
 Use consistent native figure sizes rather than forcing every plot to the maximum notebook width. In GitHub's current 894-pixel repository iframe, Markdown occupies 724 pixels beginning 17 pixels to the right of rich image output. Published plots are therefore normalised to a 724-pixel visible width and receive a measured 17-pixel transparent left offset. They display at native size, aligning the visible canvas with the surrounding text without right padding or responsive shrinking. Prefer a restrained, light horizontal grid when guides aid interpretation; avoid a dense full grid by default.
+
+Keep plotted markers legible against both the curve and the background. Use a
+larger marker for a single focal point and a slightly smaller marker when many
+points appear. A contrasting outline may be used when it materially improves
+separation. Keep equations in legends modestly smaller than ordinary labels so
+that notation supports rather than dominates the visual.
+
+The output-alignment rule applies beyond figures. GitHub positions native code
+output at the same rich-output boundary, so publication adds two preserved
+monospace spaces—approximately 17 pixels—to every non-empty line of stream or
+plain-text output. This maintains one visual content boundary for figures,
+printed diagnostics and returned values.
+
+## Series-wide polish standard
+
+The following decisions form part of the reusable Learning Labs standard and
+must be replicated in later notebooks rather than treated as pilot-specific
+decoration:
+
+- start with a visual learning journey that matches the numbered sections;
+- use restrained cherry branding only in the opening kicker, genuinely useful
+  takeaways and the closing line;
+- use naturally sized tables with readable but subordinate text;
+- display important mathematics at approximately `1.1em` and define every
+  symbol before use;
+- show a generic rule before its lesson-specific application when it improves
+  intuition, including generic differentiation rules;
+- use compact vector notation when a tall symbolic column would render poorly,
+  while still showing a small concrete column-vector example;
+- use consistent native figure sizes, light horizontal guides, accessible
+  colours and clearly differentiated focal markers;
+- interpret every numerical and visual output in the prose that follows;
+- remove trailing blank lines from code cells; and
+- publish every output with the standard approximately 17-pixel left inset.
 
 ## Reproducibility
 

@@ -22,6 +22,10 @@ PLOT_LEFT_OFFSET_PX = 17
 # to x=836 px. A 724 px visible plot plus the 17 px left offset therefore
 # renders natively without GitHub responsively shrinking the alignment offset.
 PLOT_VISIBLE_WIDTH_PX = 724
+# GitHub renders stream and plain-text output in a monospace font at roughly
+# 8.5 px per character. Two preserved spaces therefore provide approximately
+# the same 17 px inset as the transparent padding used for PNG figures.
+TEXT_OUTPUT_LEFT_INDENT = "  "
 
 
 def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
@@ -56,6 +60,48 @@ def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
                 buffer = io.BytesIO()
                 canvas.save(buffer, format="PNG")
             output.data["image/png"] = base64.b64encode(buffer.getvalue()).decode("ascii")
+
+
+def indent_text_output(text: str) -> str:
+    """Inset each visible line of native text output by approximately 17 px."""
+    return "".join(
+        f"{TEXT_OUTPUT_LEFT_INDENT}{line}" if line.strip("\r\n") else line
+        for line in text.splitlines(keepends=True)
+    )
+
+
+def align_text_outputs(notebook: nbformat.NotebookNode) -> None:
+    """Align native text output with the surrounding notebook content.
+
+    Stream output stores text directly, while execute-result and display-data
+    outputs expose a ``text/plain`` representation. PNG-backed display data
+    retain their text fallback unchanged because the visible figure receives
+    the exact pixel alignment in :func:`align_png_outputs`.
+    """
+    for cell in notebook.cells:
+        if cell.cell_type != "code":
+            continue
+        for output in cell.get("outputs", []):
+            if output.output_type == "stream":
+                text = output.get("text", "")
+                if isinstance(text, list):
+                    text = "".join(text)
+                output["text"] = indent_text_output(text)
+                continue
+
+            data = output.get("data", {})
+            if "image/png" in data or "text/plain" not in data:
+                continue
+            text = data["text/plain"]
+            if isinstance(text, list):
+                text = "".join(text)
+            data["text/plain"] = indent_text_output(text)
+
+
+def align_code_outputs(notebook: nbformat.NotebookNode) -> None:
+    """Apply the standard publication alignment to every visible output."""
+    align_png_outputs(notebook)
+    align_text_outputs(notebook)
 
 
 def notebook_links(notebook: nbformat.NotebookNode) -> tuple[set[str], set[str]]:
@@ -118,7 +164,7 @@ def validate(path: Path, execute: bool) -> list[str]:
                 resources={"metadata": {"path": str(path.parent)}},
             )
             client.execute()
-            align_png_outputs(notebook)
+            align_code_outputs(notebook)
             # Preserve only outputs produced by a successful clean-kernel run.
             # GitHub readers can therefore inspect the complete verified lab.
             nbformat.write(notebook, path)
@@ -130,17 +176,10 @@ def validate(path: Path, execute: bool) -> list[str]:
 
 def main() -> int:
     """Validate the reusable template structurally and execute published labs."""
-    targets = [
-        (ROOT / "templates" / "CH3RRY PI3 Learning Lab Template.ipynb", False),
-        (
-            ROOT
-            / "notebooks"
-            / "01-foundations"
-            / "gradient-descent"
-            / "01-gradient-descent-from-intuition-to-implementation.ipynb",
-            True,
-        ),
-    ]
+    targets = [(ROOT / "templates" / "CH3RRY PI3 Learning Lab Template.ipynb", False)]
+    targets.extend(
+        (path, True) for path in sorted((ROOT / "notebooks").rglob("*.ipynb"))
+    )
 
     failed = False
     for path, execute in targets:

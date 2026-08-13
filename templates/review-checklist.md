@@ -37,6 +37,10 @@
 - [ ] No concept is dismissed as obvious, trivial or easy.
 - [ ] Colour is not the only carrier of meaning.
 - [ ] Figures and outputs receive textual interpretations.
+- [ ] Brand accents are restrained to the kicker, important takeaways and closing line.
+- [ ] Tables and displayed mathematics are legible without dominating the prose.
+- [ ] Visual learning journey stages correspond to the notebook sections.
+- [ ] Plots use purposeful guides, accessible colours and clearly visible focal markers.
 
 ## Reproducibility and release
 
@@ -44,6 +48,9 @@
 - [ ] Randomness is reproducible where appropriate.
 - [ ] Dependencies and data sources are documented.
 - [ ] Links, anchors, images and filenames work.
+- [ ] Code cells contain no trailing blank line.
+- [ ] Every visible code-cell output uses the standard approximately 17-pixel left alignment.
+- [ ] Publication validation discovers and executes every notebook under `notebooks/`.
 - [ ] Claims do not exceed the evidence shown.
 - [ ] Limitations and suggested next steps are included.
 - [ ] The summary collects and links the principal equations and explains how they connect.

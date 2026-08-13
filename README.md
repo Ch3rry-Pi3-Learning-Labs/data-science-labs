@@ -11,9 +11,10 @@ Each Learning Lab builds a method gradually:
 5. assemble the complete method; and
 6. inspect, validate and interpret the result.
 
-## First pilot
+## Foundation Learning Labs
 
 - [Gradient Descent: From Intuition to Implementation](./notebooks/01-foundations/gradient-descent/01-gradient-descent-from-intuition-to-implementation.ipynb)
+- [Feature Scaling: Why Units Change Gradient Descent](./notebooks/01-foundations/feature-scaling/02-feature-scaling-why-units-change-gradient-descent.ipynb)
 
 ## Repository structure
 
@@ -40,7 +41,7 @@ python -m venv .venv
 
 Open the repository folder in VS Code and select the `.venv` Python environment as the notebook kernel. The workspace setting points to `.venv\Scripts\python.exe`, and the environment itself is excluded from Git.
 
-Validate the reusable template and execute the published pilot from a clean kernel with:
+Validate the reusable template and execute every published notebook from a clean kernel with:
 
 ```powershell
 .\.venv\Scripts\python.exe tools\validate_notebooks.py
