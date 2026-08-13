@@ -3,12 +3,32 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from textwrap import dedent
 
 
 ROOT = Path(__file__).resolve().parents[1]
 BLUE = "#4DAAFC"
+
+
+def readable_table(headers: list[str], rows: list[list[str]]) -> str:
+    """Return a naturally sized GitHub-safe table with more legible text."""
+    header_html = "".join(
+        f'<th align="left"><font size="4">{header}</font></th>' for header in headers
+    )
+    row_html = "\n".join(
+        "<tr>"
+        + "".join(f'<td align="left"><font size="4">{value}</font></td>' for value in row)
+        + "</tr>"
+        for row in rows
+    )
+    return (
+        '<table>\n'
+        f'<thead><tr>{header_html}</tr></thead>\n'
+        f'<tbody>\n{row_html}\n</tbody>\n'
+        '</table>'
+    )
 
 
 def lines(text: str) -> list[str]:
@@ -25,10 +45,20 @@ def markdown(text: str) -> dict:
     # preserving deliberate three-space nesting in the table of contents.
     source = dedent(text).strip("\n").split("\n")
     source = [line[8:] if line.startswith("        ") else line for line in source]
+    cleaned = "\n".join(source)
+    # Displayed equations are central teaching objects and should be slightly
+    # larger than inline notation. Apply this consistently at generation time.
+    def enlarge_display_equation(match: re.Match[str]) -> str:
+        equation = match.group(1).strip()
+        if equation.startswith(r"\large"):
+            return f"$$\n{equation}\n$$"
+        return "$$\n\\large\n" + equation + "\n$$"
+
+    cleaned = re.sub(r"(?s)\$\$(.*?)\$\$", enlarge_display_equation, cleaned)
     return {
         "cell_type": "markdown",
         "metadata": {},
-        "source": [line + "\n" for line in source],
+        "source": [line + "\n" for line in cleaned.split("\n")],
     }
 
 
@@ -96,14 +126,17 @@ def build_template() -> None:
 
         **[Frame the problem](#problem)** &rarr; **[Establish the mathematics](#mathematics)** &rarr; **[Build the method](#method)** &rarr; **[Assemble the implementation](#complete-implementation)** &rarr; **[Interpret the result](#visualise)** &rarr; **[Validate and reflect](#checks)**
 
-        | Stage | Purpose | Main section |
-        |---|---|---|
-        | 1. Frame | Define the question and why it matters. | [Section 2](#problem) |
-        | 2. Formalise | Introduce and explain the required mathematics. | [Section 3](#mathematics) |
-        | 3. Build | Develop and test each calculation separately. | [Sections 4–5](#method) |
-        | 4. Assemble | Combine the verified pieces into the complete method. | [Section 6](#complete-implementation) |
-        | 5. Interpret | Visualise the output and explain what it means. | [Section 7](#visualise) |
-        | 6. Validate | Check behaviour, state limitations and consolidate the lesson. | [Sections 8–9](#checks) |
+        {readable_table(
+            ["Stage", "Purpose", "Main section"],
+            [
+                ["1. Frame", "Define the question and why it matters.", '<a href="#problem">Section 2</a>'],
+                ["2. Formalise", "Introduce and explain the required mathematics.", '<a href="#mathematics">Section 3</a>'],
+                ["3. Build", "Develop and test each calculation separately.", '<a href="#method">Sections 4–5</a>'],
+                ["4. Assemble", "Combine the verified pieces into the complete method.", '<a href="#complete-implementation">Section 6</a>'],
+                ["5. Interpret", "Visualise the output and explain what it means.", '<a href="#visualise">Section 7</a>'],
+                ["6. Validate", "Check behaviour, state limitations and consolidate the lesson.", '<a href="#checks">Sections 8–9</a>'],
+            ],
+        )}
         """),
         markdown(f"""
         ## <font color="{BLUE}"><strong>Learning objectives</strong></font>
@@ -140,6 +173,9 @@ def build_template() -> None:
 
         SEED = 5901
         rng = np.random.default_rng(SEED)
+
+        FULL_WIDTH_FIGSIZE = (14, 6)
+        TWO_PANEL_FIGSIZE = (12, 4.5)
         """),
         markdown(heading("problem", 2, "2. Problem and intuition") + "\n\nBegin with a section preview: why this section is needed, what it will establish and how that output will support the next stage. Then introduce the practical question, what is known, what must be learned and why the proposed method helps."),
         markdown(heading("mathematics", 2, "3. Mathematical foundations") + r"""
@@ -222,14 +258,17 @@ def build_gradient_descent_pilot() -> None:
 
         **[Frame the problem](#optimisation-problem)** &rarr; **[Build one-parameter intuition](#one-parameter)** &rarr; **[Control the step size](#learning-rate)** &rarr; **[Extend to a fitted line](#linear-regression)** &rarr; **[Run the complete optimiser](#fit-runner)** &rarr; **[Inspect and validate](#fit-model)**
 
-        | Stage | What you will do | Notebook sections |
-        |---|---|---|
-        | 1. Frame | Define the objective, parameters and meaning of a minimum. | [Section 2](#optimisation-problem) |
-        | 2. Understand | Calculate one update by hand and reproduce it in Python. | [Section 3](#one-parameter) |
-        | 3. Control | See how the learning rate changes the optimisation journey. | [Section 4](#learning-rate) |
-        | 4. Extend | Move from one parameter to the weight and bias of a fitted line. | [Section 5](#linear-regression) |
-        | 5. Assemble | Combine the loss, gradients and update rule into batch gradient descent. | [Sections 6–7](#fit-runner) |
-        | 6. Diagnose | Compare learning rates, run checks and recognise limitations. | [Sections 8–10](#compare-rates) |
+        {readable_table(
+            ["Stage", "What you will do", "Notebook sections"],
+            [
+                ["1. Frame", "Define the objective, parameters and meaning of a minimum.", '<a href="#optimisation-problem">Section 2</a>'],
+                ["2. Understand", "Calculate one update by hand and reproduce it in Python.", '<a href="#one-parameter">Section 3</a>'],
+                ["3. Control", "See how the learning rate changes the optimisation journey.", '<a href="#learning-rate">Section 4</a>'],
+                ["4. Extend", "Move from one parameter to the weight and bias of a fitted line.", '<a href="#linear-regression">Section 5</a>'],
+                ["5. Assemble", "Combine the loss, gradients and update rule into batch gradient descent.", '<a href="#fit-runner">Sections 6–7</a>'],
+                ["6. Diagnose", "Compare learning rates, run checks and recognise limitations.", '<a href="#compare-rates">Sections 8–10</a>'],
+            ],
+        )}
         """),
         markdown(f"""
         ## <font color="{BLUE}"><strong>Learning objectives</strong></font>
@@ -281,6 +320,10 @@ NumPy supplies vector operations and a reproducible random-number generator. Mat
         BLUE = "#4DAAFC"
         RED = "#E53935"
         GREEN = "#18A957"
+
+        # Full-width figures align with the notebook text column on GitHub.
+        FULL_WIDTH_FIGSIZE = (14, 6)
+        TWO_PANEL_FIGSIZE = (12, 4.5)
         """),
         markdown(heading("optimisation-problem", 2, "2. The optimisation problem") + r"""
 
@@ -350,7 +393,7 @@ $$
         theta_grid = np.linspace(-1.0, 6.5, 300)
         objective_grid = (theta_grid - 3.0) ** 2
 
-        fig, ax = plt.subplots(figsize=(8, 4.5))
+        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
         ax.plot(theta_grid, objective_grid, color=BLUE, linewidth=2.5, label=r"$J(\\theta)=(\\theta-3)^2$")
         ax.scatter([3.0], [0.0], color=GREEN, s=75, zorder=3, label="Minimum at θ = 3")
         ax.set(title="A one-parameter objective", xlabel="Parameter θ", ylabel="Loss J(θ)")
@@ -360,7 +403,7 @@ $$
         markdown("""
 The curve is bowl-shaped. Values far from 3 produce a large squared loss, while moving towards 3 reduces it. The labelled point identifies the known minimum; colour is not required to distinguish it because the legend also names it.
 """),
-        markdown(heading("one-parameter-gradient", 3, "3.1 The gradient gives a direction") + r"""
+        markdown((heading("one-parameter-gradient", 3, "3.1 The gradient gives a direction") + r"""
 
         We now need a rule for deciding which direction reduces the objective. For a function with one parameter, that local direction is supplied by its derivative.
 
@@ -368,7 +411,22 @@ The curve is bowl-shaped. Values far from 3 produce a large squared loss, while 
 
         $$J(\theta)=(\theta-3)^2.$$
 
-        The outer function squares its input and the inner function is $\theta-3$. Applying the chain rule gives
+        Before applying it to this objective, write the power and chain rules in generic form. For any differentiable inner function $g(\theta)$ and constant exponent $n$,
+
+        $$
+        \frac{\mathrm{d}}{\mathrm{d}\theta}\left[g(\theta)\right]^n
+        =n\left[g(\theta)\right]^{n-1}g'(\theta).
+        $$
+
+        This says: bring the exponent to the front, reduce it by one, and multiply by the derivative of the inner function. Here,
+
+        $$
+        g(\theta)=\theta-3,
+        \qquad n=2,
+        \qquad g'(\theta)=1.
+        $$
+
+        Substituting these components into the generic rule gives
 
         $$
         \frac{\mathrm{d}J}{\mathrm{d}\theta}
@@ -385,11 +443,7 @@ $$
 
 The sign supplies a direction:
 
-| Current position | Gradient sign | Direction that reduces the loss |
-|---|---:|---|
-| $\theta<3$ | Negative | Increase $\theta$ |
-| $\theta=3$ | Zero | No update is needed |
-| $\theta>3$ | Positive | Decrease $\theta$ |
+DIRECTION_TABLE
 
         Having calculated the direction, we next need a rule for changing the parameter. Gradient descent uses the update
 
@@ -403,7 +457,17 @@ $$
 where $t$ is the current iteration and $\alpha>0$ is the **learning rate**. The learning rate controls the size of the step.
 
         [Equation (3.3)](#equation-3-3) says: evaluate the slope at the current parameter, scale it by the learning rate and move in the opposite direction. Subtracting a positive gradient moves left; subtracting a negative gradient moves right.
-        """),
+        """).replace(
+            "DIRECTION_TABLE",
+            readable_table(
+                ["Current position", "Gradient sign", "Direction that reduces the loss"],
+                [
+                    ["θ &lt; 3", "Negative", "Increase θ"],
+                    ["θ = 3", "Zero", "No update is needed"],
+                    ["θ &gt; 3", "Positive", "Decrease θ"],
+                ],
+            ),
+        )),
         markdown(heading("worked-update", 3, "3.2 One hand-worked update") + r"""
 
 This subsection verifies the complete chain numerically before we write any Python. Suppose the initial parameter is $\theta^{(0)}=0$ and the learning rate is $\alpha=0.1$.
@@ -603,7 +667,7 @@ The next function records a complete path so that we can inspect these behaviour
         code("""
         example_rates = [0.02, 0.10, 0.95, 1.05]
 
-        fig, ax = plt.subplots(figsize=(8, 4.8))
+        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
         for rate in example_rates:
             _, losses = trace_quadratic_descent(0.0, rate, n_steps=20)
             ax.semilogy(losses, linewidth=2, marker="o", markersize=3, label=f"α = {rate}")
@@ -961,7 +1025,7 @@ At the initial horizontal line `ŷ = 0`, both gradients are positive or negative
         code("""
         fitted_predictions = fitted.weight * x + fitted.bias
 
-        fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+        fig, axes = plt.subplots(1, 2, figsize=TWO_PANEL_FIGSIZE)
 
         axes[0].scatter(x, y, alpha=0.7, color=BLUE, label="Observed data")
         axes[0].plot(x, fitted_predictions, color=RED, linewidth=2.5, label="Fitted line")
@@ -981,7 +1045,7 @@ The left panel shows that the fitted line follows the centre of the noisy observ
         code("""
         regression_rates = [0.005, 0.05, 0.20]
 
-        fig, ax = plt.subplots(figsize=(8, 4.8))
+        fig, ax = plt.subplots(figsize=FULL_WIDTH_FIGSIZE)
         for rate in regression_rates:
             result = fit_linear_gradient_descent(x, y, learning_rate=rate, n_steps=120)
             ax.semilogy(result.losses, linewidth=2, label=f"α = {rate}")

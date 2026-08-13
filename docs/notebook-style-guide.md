@@ -113,6 +113,15 @@ Use tables when they make a mapping easier to understand, particularly for:
 
 Avoid large tables that merely repeat prose.
 
+Use a readable table text size, but let the renderer determine the table's natural width. Do not stretch a compact table merely to fill the notebook column.
+
+## Displayed mathematics
+
+- Keep inline mathematics at the surrounding body-text size.
+- Render standalone display equations slightly larger so that symbols, superscripts and subscripts remain legible in GitHub's notebook view.
+- Introduce a generic rule before substituting a lesson-specific expression when that rule is important to the reader's intuition.
+- Define every symbol in the generic form, then explicitly map the concrete terms onto it before simplifying.
+
 ## Code and output sequence
 
 - Separate reusable definitions from calls that demonstrate them.

@@ -36,6 +36,16 @@ def validate(path: Path, execute: bool) -> list[str]:
     if not any("Contents" in cell.source for cell in notebook.cells if cell.cell_type == "markdown"):
         failures.append("missing table of contents")
 
+    unresolved_markdown_tokens = ("readable_table(", "DIRECTION_TABLE", "full_width_table(")
+    for cell_index, cell in enumerate(notebook.cells):
+        if cell.cell_type != "markdown":
+            continue
+        token = next((item for item in unresolved_markdown_tokens if item in cell.source), None)
+        if token:
+            failures.append(
+                f"unresolved generator token {token!r} in Markdown cell {cell_index}"
+            )
+
     # Eight leading spaces turn ordinary Markdown into a literal code block.
     # The public notebooks use fenced blocks if code is ever needed in prose,
     # so this reliably catches accidental generator indentation.
