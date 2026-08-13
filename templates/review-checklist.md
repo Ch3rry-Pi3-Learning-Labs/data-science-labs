@@ -6,6 +6,8 @@
 - [ ] The table of contents links to every principal section.
 - [ ] Section numbering and anchors are consistent.
 - [ ] The notebook progresses from intuition to formal method to implementation.
+- [ ] The introduction previews the complete learning journey.
+- [ ] Every principal section explains why it is included and what it will produce.
 
 ## Mathematics
 
@@ -14,6 +16,11 @@
 - [ ] Mathematical statements and derivations are correct.
 - [ ] Plain-English readings explain the operation and purpose of key equations.
 - [ ] A small worked example connects the notation to actual values.
+- [ ] Numerical examples show the generic formula before substitution.
+- [ ] Substitutions and important arithmetic steps are visible and interpreted.
+- [ ] Central derivatives and transformations are derived rather than asserted.
+- [ ] References to earlier equations use working internal links.
+- [ ] New vectors and matrices have generic, concrete and code representations.
 
 ## Code
 
@@ -39,4 +46,4 @@
 - [ ] Links, anchors, images and filenames work.
 - [ ] Claims do not exceed the evidence shown.
 - [ ] Limitations and suggested next steps are included.
-
+- [ ] The summary collects and links the principal equations and explains how they connect.

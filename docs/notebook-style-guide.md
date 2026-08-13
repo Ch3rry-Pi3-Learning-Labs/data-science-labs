@@ -20,6 +20,23 @@ For every substantial algorithmic stage:
 
 Only after the individual stages are understood should the notebook assemble the complete algorithm.
 
+## The no-hidden-steps rule
+
+The reader should never have to reverse-engineer where a displayed value, formula or code operation came from. Before substituting numerical values:
+
+1. identify and link the equation being used;
+2. restate its generic form when the worked calculation is not immediately adjacent;
+3. list the values being substituted;
+4. show the substitution itself;
+5. show the important arithmetic steps; and
+6. interpret the result and explain what uses it next.
+
+For example, do not jump directly from a stated objective to `J(0) = 9`. Show
+the generic objective, substitute the parameter value, calculate the result and
+then explain what that loss represents.
+
+Derivations should follow the same principle. Do not write “differentiating gives” when the derivative is a learning objective or is needed to understand the implementation. Show the relevant rule, its application to the current expression, the simplified result and its connection to the code. A derivation may be compressed only when it has been declared prerequisite knowledge and is not central to the lesson.
+
 ## Recommended notebook anatomy
 
 1. Title, short description and intended audience
@@ -37,6 +54,14 @@ Only after the individual stages are understood should the notebook assemble the
 
 Sections may change to fit the subject, but a notebook should not omit the learning objectives, contents, definitions, interpretation, checks or summary.
 
+The opening description should also provide a short roadmap: what the notebook will build, why the stages occur in that order and what the final result will allow the reader to do.
+
+Every principal section should begin with two or three sentences explaining:
+
+- why the section is needed at this point;
+- what it will introduce or produce; and
+- how that output connects to the wider learning journey.
+
 ## Navigation and headings
 
 - Use numbered level-two sections: `1.`, `2.`, `3.`.
@@ -45,6 +70,9 @@ Sections may change to fit the subject, but a notebook should not omit the learn
 - Use descriptive headings that state the action or concept.
 - Use CH3RRY PI3 blue `#4DAAFC` for displayed notebook headings.
 - Avoid decorative colour in ordinary body text.
+- Give each important numbered equation an explicit HTML anchor.
+- Link references such as `[Equation (3.1)](#equation-3-1)` back to that anchor.
+- Keep the visible equation number and anchor name stable when revising prose.
 
 Example:
 
@@ -64,6 +92,10 @@ Prefer short transitions such as:
 - “This result becomes the input to…”
 
 Do not assume that a formula, plot or array is self-explanatory. Explicitly show the reader how to read it.
+
+Use a blockquote for a genuinely important intuition, warning, boundary or
+takeaway. It should help the reader navigate the argument rather than merely
+decorate ordinary prose.
 
 ## Tables
 
@@ -88,6 +120,27 @@ Avoid large tables that merely repeat prose.
 - Keep reusable functions independent of demonstration constants wherever practical.
 - The complete runner should call the same focused functions developed earlier.
 
+When code uses vectors or matrices, show both representations before relying on
+them:
+
+- the generic mathematical object and its dimensions;
+- a small concrete numerical example;
+- the corresponding NumPy shape and orientation; and
+- the relationship between mathematical and Python indexing where relevant.
+
+For example, define a parameter vector symbolically before showing a concrete
+two-parameter vector and then its NumPy representation.
+
+## Closing summary
+
+The final summary should do more than announce completion. It should:
+
+- revisit the original learning journey;
+- collect and link the principal equations;
+- explain how those equations combine into the final algorithm;
+- distinguish what has been demonstrated from what remains unproven; and
+- identify a small number of purposeful next steps.
+
 ## Visuals
 
 Every plot should have a purpose stated before it and an interpretation afterwards. Include:
@@ -110,4 +163,3 @@ Every plot should have a purpose stated before it and an interpretation afterwar
 ## Quality boundary
 
 A Learning Lab is ready only when it is mathematically correct, independently executable, visually legible and understandable to its intended reader. Technical sophistication is not a substitute for teaching clarity.
-

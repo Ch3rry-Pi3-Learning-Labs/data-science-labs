@@ -45,6 +45,9 @@ def validate(path: Path, execute: bool) -> list[str]:
                 resources={"metadata": {"path": str(path.parent)}},
             )
             client.execute()
+            # Preserve only outputs produced by a successful clean-kernel run.
+            # GitHub readers can therefore inspect the complete verified lab.
+            nbformat.write(notebook, path)
         except Exception as exc:  # Execution exceptions require their full type.
             failures.append(f"clean-kernel execution failed: {type(exc).__name__}: {exc}")
 
@@ -82,4 +85,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
