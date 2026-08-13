@@ -316,7 +316,7 @@ NumPy supplies vector operations and a reproducible random-number generator. Mat
         SEED = 5901
         rng = np.random.default_rng(SEED)
 
-        plt.style.use("seaborn-v0_8-whitegrid")
+        plt.style.use("seaborn-v0_8-white")
         BLUE = "#4DAAFC"
         RED = "#E53935"
         GREEN = "#18A957"
@@ -392,9 +392,10 @@ $$
         objective_grid = (theta_grid - 3.0) ** 2
 
         fig, ax = plt.subplots(figsize=SINGLE_PLOT_FIGSIZE)
-        ax.plot(theta_grid, objective_grid, color=BLUE, linewidth=2.5, label=r"$J(\\theta)=(\\theta-3)^2$")
+        ax.plot(theta_grid, objective_grid, color=BLUE, linewidth=2.0, label=r"$J(\\theta)=(\\theta-3)^2$")
         ax.scatter([3.0], [0.0], color=GREEN, s=75, zorder=3, label="Minimum at θ = 3")
         ax.set(title="A one-parameter objective", xlabel="Parameter θ", ylabel="Loss J(θ)")
+        ax.grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
         ax.legend()
         plt.show()
         """),
@@ -671,6 +672,7 @@ The next function records a complete path so that we can inspect these behaviour
             ax.semilogy(losses, linewidth=2, marker="o", markersize=3, label=f"α = {rate}")
 
         ax.set(title="Learning rate changes convergence", xlabel="Gradient update", ylabel="Loss J(θ), logarithmic scale")
+        ax.grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
         ax.legend()
         plt.show()
         """),
@@ -1030,10 +1032,12 @@ At the initial horizontal line `ŷ = 0`, both gradients are positive or negative
         axes[0].scatter(x, y, alpha=0.7, color=BLUE, label="Observed data")
         axes[0].plot(x, fitted_predictions, color=RED, linewidth=2.5, label="Fitted line")
         axes[0].set(title="Fitted relationship", xlabel="Feature x", ylabel="Target y")
+        axes[0].grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
         axes[0].legend()
 
         axes[1].semilogy(fitted.losses, color=GREEN, linewidth=2.5)
         axes[1].set(title="Optimisation history", xlabel="Gradient update", ylabel="MSE, logarithmic scale")
+        axes[1].grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
 
         plt.tight_layout()
         plt.show()
@@ -1051,6 +1055,7 @@ The left panel shows that the fitted line follows the centre of the noisy observ
             ax.semilogy(result.losses, linewidth=2, label=f"α = {rate}")
 
         ax.set(title="Batch gradient descent under three learning rates", xlabel="Gradient update", ylabel="MSE, logarithmic scale")
+        ax.grid(axis="y", color="#D0D7DE", linewidth=0.6, alpha=0.55)
         ax.legend()
         plt.show()
         """),

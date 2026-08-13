@@ -164,7 +164,7 @@ Every plot should have a purpose stated before it and an interpretation afterwar
 - accessible colour contrast; and
 - a short explanation of the pattern the reader should inspect.
 
-Use consistent native figure sizes rather than forcing every plot to the maximum notebook width. GitHub places rich output slightly to the left of its Markdown and code columns, so published PNG outputs receive a small transparent left offset that aligns the visible figure canvas with the surrounding notebook content. Do not add unnecessary right padding or stretch a plot solely to fill the available width.
+Use consistent native figure sizes rather than forcing every plot to the maximum notebook width. GitHub places rich output 17 pixels to the left of its Markdown and code content in its current notebook renderer, so published PNG outputs receive a measured 17-pixel transparent left offset. This aligns the visible figure canvas with the surrounding content without adding right padding or stretching the plot. Prefer a restrained, light horizontal grid when guides aid interpretation; avoid a dense full grid by default.
 
 ## Reproducibility
 

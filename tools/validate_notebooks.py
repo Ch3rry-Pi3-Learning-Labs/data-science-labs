@@ -14,7 +14,10 @@ from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PLOT_LEFT_OFFSET_PX = 10
+# Measured in GitHub's live notebook renderer at both 894 px and 1264 px:
+# rich image output begins at x=95 px, while code and Markdown begin at
+# approximately x=112 px. Seventeen transparent pixels align the visible plot.
+PLOT_LEFT_OFFSET_PX = 17
 
 
 def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
