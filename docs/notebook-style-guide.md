@@ -115,6 +115,16 @@ Avoid large tables that merely repeat prose.
 
 Use a readable table text size, but let the renderer determine the table's natural width. Do not stretch a compact table merely to fill the notebook column.
 
+## Brand accents
+
+Use the cherry motif sparingly, following the CH3RRY PI3 website rather than decorating every section:
+
+- one small `🍒 CH3RRY PI3 · DATA SCIENCE LEARNING LAB` kicker above the title;
+- an occasional `🍒 CH3RRY PI3 takeaway` for a genuinely central intuition; and
+- one restrained branded line at the end of the notebook.
+
+Keep ordinary technical headings and body text free of emojis. Brand accents should add identity without competing with the mathematics or code.
+
 ## Displayed mathematics
 
 - Keep inline mathematics at the surrounding body-text size.

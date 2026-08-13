@@ -15,11 +15,11 @@ BLUE = "#4DAAFC"
 def readable_table(headers: list[str], rows: list[list[str]]) -> str:
     """Return a naturally sized GitHub-safe table with more legible text."""
     header_html = "".join(
-        f'<th align="left"><font size="4">{header}</font></th>' for header in headers
+        f'<th align="left"><font size="3">{header}</font></th>' for header in headers
     )
     row_html = "\n".join(
         "<tr>"
-        + "".join(f'<td align="left"><font size="4">{value}</font></td>' for value in row)
+        + "".join(f'<td align="left"><font size="3">{value}</font></td>' for value in row)
         + "</tr>"
         for row in rows
     )
@@ -110,9 +110,9 @@ def write_notebook(relative_path: str, cells: list[dict]) -> None:
 def build_template() -> None:
     cells = [
         markdown(f"""
-        # <font color="{BLUE}"><strong>[Learning Lab title]</strong></font>
+        <font color="#2563EB"><strong>🍒 CH3RRY PI3 · DATA SCIENCE LEARNING LAB</strong></font>
 
-        **CH3RRY PI3 Data Science Learning Labs**
+        # <font color="{BLUE}"><strong>[Learning Lab title]</strong></font>
 
         [One friendly paragraph explaining the problem, why it matters and what the reader will build. Follow it with a short roadmap explaining the order of the notebook.]
 
@@ -232,7 +232,7 @@ $$
         markdown(heading("complete-implementation", 2, "6. Assemble the complete implementation") + "\n\nCombine the focused functions already developed. Do not replace them with an unrelated implementation."),
         markdown(heading("visualise", 2, "7. Visualise and interpret the result") + "\n\nState what the plot will reveal before creating it, then explain the observed pattern afterwards."),
         markdown(heading("checks", 2, "8. Sanity checks and limitations") + "\n\nTest invariants, edge cases and expected behaviour. State what the example does not establish."),
-        markdown(heading("summary", 2, "9. Summary and next steps") + "\n\nRevisit the learning journey, collect and link the principal equations, explain how they combine into the implementation, distinguish demonstrated results from limitations and suggest purposeful extensions."),
+        markdown(heading("summary", 2, "9. Summary and next steps") + "\n\nRevisit the learning journey, collect and link the principal equations, explain how they combine into the implementation, distinguish demonstrated results from limitations and suggest purposeful extensions.\n\n---\n\n🍒 **[CH3RRY PI3 Data Science Learning Labs](https://www.ch3rry-pi3.com)** — practical explanations, transparent calculations and code you can inspect."),
     ]
     write_notebook("templates/CH3RRY PI3 Learning Lab Template.ipynb", cells)
 
@@ -240,9 +240,9 @@ $$
 def build_gradient_descent_pilot() -> None:
     cells = [
         markdown(f"""
-        # <font color="{BLUE}"><strong>Gradient Descent: From Intuition to Implementation</strong></font>
+        <font color="#2563EB"><strong>🍒 CH3RRY PI3 · DATA SCIENCE LEARNING LAB</strong></font>
 
-        **CH3RRY PI3 Data Science Learning Labs**
+        # <font color="{BLUE}"><strong>Gradient Descent: From Intuition to Implementation</strong></font>
 
         Gradient descent is the optimisation engine behind a large part of modern machine learning. This Learning Lab develops it without treating it as a black box.
 
@@ -366,7 +366,7 @@ where $\boldsymbol{\theta}^{*}$ denotes a parameter vector that minimises the lo
 
         [Equation (2.1)](#equation-2-1) can be read as: among all possible parameter values, find the choice that produces the smallest loss. Gradient descent approaches this minimum through a sequence of controlled updates rather than attempting to jump there in one step.
 
-        > **Why this matters:** the objective tells us what “better” means; gradient descent supplies a repeatable way of moving the parameters towards it.
+        > 🍒 **CH3RRY PI3 takeaway:** the objective tells us what “better” means; gradient descent supplies a repeatable way of moving the parameters towards it.
         """),
         markdown(heading("one-parameter", 2, "3. Start with one parameter") + r"""
 
@@ -1144,6 +1144,10 @@ The smallest rate makes gradual progress. The intermediate and larger rates reac
         > **What we have demonstrated:** the mathematics, code and recorded outputs agree for a controlled one-feature regression problem. We have not established that the same learning rate or model is suitable for unseen or differently scaled data.
 
         Purposeful next steps include extending the implementation to several features, comparing batch and stochastic gradient descent, introducing feature scaling and examining adaptive optimisers used in neural networks.
+
+        ---
+
+        🍒 **[CH3RRY PI3 Data Science Learning Labs](https://www.ch3rry-pi3.com)** — practical explanations, transparent calculations and code you can inspect.
         """),
     ]
     write_notebook(
