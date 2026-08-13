@@ -90,6 +90,22 @@ def build_template() -> None:
         **Last reviewed:** [Date]
         """),
         markdown(f"""
+        ## <font color="{BLUE}"><strong>Learning journey</strong></font>
+
+        Use this roadmap to show the reader how the notebook develops. Keep each stage short, link it to the relevant section and make the dependency between stages visible.
+
+        **[Frame the problem](#problem)** &rarr; **[Establish the mathematics](#mathematics)** &rarr; **[Build the method](#method)** &rarr; **[Assemble the implementation](#complete-implementation)** &rarr; **[Interpret the result](#visualise)** &rarr; **[Validate and reflect](#checks)**
+
+        | Stage | Purpose | Main section |
+        |---|---|---|
+        | 1. Frame | Define the question and why it matters. | [Section 2](#problem) |
+        | 2. Formalise | Introduce and explain the required mathematics. | [Section 3](#mathematics) |
+        | 3. Build | Develop and test each calculation separately. | [Sections 4–5](#method) |
+        | 4. Assemble | Combine the verified pieces into the complete method. | [Section 6](#complete-implementation) |
+        | 5. Interpret | Visualise the output and explain what it means. | [Section 7](#visualise) |
+        | 6. Validate | Check behaviour, state limitations and consolidate the lesson. | [Sections 8–9](#checks) |
+        """),
+        markdown(f"""
         ## <font color="{BLUE}"><strong>Learning objectives</strong></font>
 
         By the end of this Learning Lab, you should be able to:
@@ -198,6 +214,22 @@ def build_gradient_descent_pilot() -> None:
         **Prerequisites:** functions, squares, sums and the idea that a derivative measures slope  
         **Estimated study time:** 60–90 minutes  
         **Last reviewed:** 13 August 2026
+        """),
+        markdown(f"""
+        ## <font color="{BLUE}"><strong>Learning journey</strong></font>
+
+        The notebook follows one continuous path. Each stage produces the idea or calculation needed by the next, progressing from an easily checked example to a complete fitted model.
+
+        **[Frame the problem](#optimisation-problem)** &rarr; **[Build one-parameter intuition](#one-parameter)** &rarr; **[Control the step size](#learning-rate)** &rarr; **[Extend to a fitted line](#linear-regression)** &rarr; **[Run the complete optimiser](#fit-runner)** &rarr; **[Inspect and validate](#fit-model)**
+
+        | Stage | What you will do | Notebook sections |
+        |---|---|---|
+        | 1. Frame | Define the objective, parameters and meaning of a minimum. | [Section 2](#optimisation-problem) |
+        | 2. Understand | Calculate one update by hand and reproduce it in Python. | [Section 3](#one-parameter) |
+        | 3. Control | See how the learning rate changes the optimisation journey. | [Section 4](#learning-rate) |
+        | 4. Extend | Move from one parameter to the weight and bias of a fitted line. | [Section 5](#linear-regression) |
+        | 5. Assemble | Combine the loss, gradients and update rule into batch gradient descent. | [Sections 6–7](#fit-runner) |
+        | 6. Diagnose | Compare learning rates, run checks and recognise limitations. | [Sections 8–10](#compare-rates) |
         """),
         markdown(f"""
         ## <font color="{BLUE}"><strong>Learning objectives</strong></font>

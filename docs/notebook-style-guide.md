@@ -40,21 +40,24 @@ Derivations should follow the same principle. Do not write “differentiating gi
 ## Recommended notebook anatomy
 
 1. Title, short description and intended audience
-2. Learning objectives
-3. Linked table of contents
-4. Imports and reproducibility
-5. Problem and intuition
-6. Notation and mathematical foundations
-7. Modular algorithm development
-8. One hand-worked or small numerical example
-9. Complete implementation
-10. Visualisation and diagnostics
-11. Sanity checks and common failure modes
-12. Summary and suggested next steps
+2. Visual learning journey
+3. Learning objectives
+4. Linked table of contents
+5. Imports and reproducibility
+6. Problem and intuition
+7. Notation and mathematical foundations
+8. Modular algorithm development
+9. One hand-worked or small numerical example
+10. Complete implementation
+11. Visualisation and diagnostics
+12. Sanity checks and common failure modes
+13. Summary and suggested next steps
 
 Sections may change to fit the subject, but a notebook should not omit the learning objectives, contents, definitions, interpretation, checks or summary.
 
 The opening description should also provide a short roadmap: what the notebook will build, why the stages occur in that order and what the final result will allow the reader to do.
+
+Follow the description with a compact **Learning journey**. Show the major stages as a left-to-right flow and link each stage to the section where it is developed. Accompany the flow with a small table explaining what the reader will do at each stage. The journey should reflect the notebook's actual structure; it is a navigation and expectation-setting device, not decoration.
 
 Every principal section should begin with two or three sentences explaining:
 
