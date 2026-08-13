@@ -18,6 +18,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # rich image output begins at x=95 px, while code and Markdown begin at
 # approximately x=112 px. Seventeen transparent pixels align the visible plot.
 PLOT_LEFT_OFFSET_PX = 17
+# At the repository page's 894 px iframe width, Markdown runs from x=112 px
+# to x=836 px. A 724 px visible plot plus the 17 px left offset therefore
+# renders natively without GitHub responsively shrinking the alignment offset.
+PLOT_VISIBLE_WIDTH_PX = 724
 
 
 def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
@@ -37,6 +41,12 @@ def align_png_outputs(notebook: nbformat.NotebookNode) -> None:
                 continue
             raw = base64.b64decode(encoded)
             with Image.open(io.BytesIO(raw)).convert("RGBA") as image:
+                if image.width > PLOT_VISIBLE_WIDTH_PX:
+                    scale = PLOT_VISIBLE_WIDTH_PX / image.width
+                    image = image.resize(
+                        (PLOT_VISIBLE_WIDTH_PX, round(image.height * scale)),
+                        Image.Resampling.LANCZOS,
+                    )
                 canvas = Image.new(
                     "RGBA",
                     (image.width + PLOT_LEFT_OFFSET_PX, image.height),
